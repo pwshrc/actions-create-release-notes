@@ -65,7 +65,7 @@ runs:
   - name: Populate GitVersion variables
     if: inputs.mode == 'upload'
     id: gitversion_vars
-    uses: pwshrc/actions-determine-version@v0.5.1
+    uses: pwshrc/actions-determine-version@v0.6.0
     with:
       mode: 'download'
       versionjson-name: ${{ inputs.versionjson-name }}
@@ -78,7 +78,7 @@ runs:
       filename: ${{ inputs.releasenotesmd-name }}
       directory: ${{ inputs.releasenotesmd-path }}
     run: |
-      [string] $filePath = Join-Path $Env:filename $Env:directory
+      [string] $filePath = Join-Path $Env:directory $Env:filename
       echo "::set-output name=filepath::$filePath"
   - name: Create release notes
     if: inputs.mode == 'upload'
