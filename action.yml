@@ -11,7 +11,7 @@ inputs:
   releasenotesmd-name:
     description: "The name of the file which will contain the release notes."
     required: true
-    default: 'release-notes'
+    default: 'release-notes.md'
   releasenotesmd-artifact-name:
     description: "The name of the artifact which will contain the release notes."
     required: true
@@ -68,7 +68,7 @@ runs:
   - name: Populate GitVersion variables
     if: inputs.mode == 'upload'
     id: gitversion_vars
-    uses: pwshrc/actions-determine-version@v0.7.0
+    uses: pwshrc/actions-determine-version@v0.8.0
     with:
       mode: 'download'
       versionjson-name: "${{ inputs.versionjson-name }}"
@@ -99,7 +99,7 @@ runs:
     uses: actions/upload-artifact@v3
     with:
       name: "${{ inputs.releasenotesmd-artifact-name }}"
-      path: "${{ inputs.releasenotesmd-path }}"
+      path: "${{ steps.calculate_releasenotesmd_filepath.outputs.filepath }}"
       if-no-files-found: error
   - name: "Get artifact: ${{ inputs.releasenotesmd-artifact-name }}"
     if: inputs.mode == 'download'
