@@ -65,7 +65,7 @@ runs:
   - name: Populate GitVersion variables
     if: inputs.mode == 'upload'
     id: gitversion_vars
-    uses: pwshrc/actions-determine-version@v0.6.0
+    uses: pwshrc/actions-determine-version@v0.7.0
     with:
       mode: 'download'
       versionjson-name: ${{ inputs.versionjson-name }}
