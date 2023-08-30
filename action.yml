@@ -68,15 +68,15 @@ runs:
     uses: pwshrc/actions-determine-version@v0.7.0
     with:
       mode: 'download'
-      versionjson-name: ${{ inputs.versionjson-name }}
-      versionjson-path: ${{ inputs.versionjson-path }}
-      versionjson-artifact-name: ${{ inputs.versionjson-artifact-name }}
+      versionjson-name: "${{ inputs.versionjson-name }}"
+      versionjson-path: "${{ inputs.versionjson-path }}"
+      versionjson-artifact-name: "${{ inputs.versionjson-artifact-name }}"
   - name: Calculate file path
     id: calculate_releasenotesmd_filepath
     shell: pwsh
     env:
-      filename: ${{ inputs.releasenotesmd-name }}
-      directory: ${{ inputs.releasenotesmd-path }}
+      filename: "${{ inputs.releasenotesmd-name }}"
+      directory: "${{ inputs.releasenotesmd-path }}"
     run: |
       [string] $filePath = Join-Path $Env:directory $Env:filename
       echo "::set-output name=filepath::$filePath"
@@ -85,30 +85,30 @@ runs:
     id: create_release_notes
     uses: mikepenz/release-changelog-builder-action@v4
     env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
     with:
-      fromTag: ${{ steps.gitversion_vars.outputs.VersionSourceSha }}
-      toTag: ${{ steps.gitversion_vars.outputs.Sha }}
+      fromTag: "${{ steps.gitversion_vars.outputs.VersionSourceSha }}"
+      toTag: "${{ steps.gitversion_vars.outputs.Sha }}"
       commitMode: true
-      outputFile: ${{ steps.calculate_releasenotesmd_filepath.outputs.filepath }}
+      outputFile: "${{ steps.calculate_releasenotesmd_filepath.outputs.filepath }}"
   - name: "Create artifact: ${{ inputs.releasenotesmd-artifact-name }}"
     if: inputs.mode == 'upload'
     uses: actions/upload-artifact@v3
     with:
-      name: ${{ inputs.releasenotesmd-artifact-name }}
-      path: ${{ inputs.releasenotesmd-path] }}
+      name: "${{ inputs.releasenotesmd-artifact-name }}"
+      path: "${{ inputs.releasenotesmd-path }}"
       if-no-files-found: error
   - name: "Get artifact: ${{ inputs.releasenotesmd-artifact-name }}"
     if: inputs.mode == 'download'
     uses: actions/download-artifact@v3
     with:
-      name: ${{ inputs.releasenotesmd-artifact-name }}
-      path: ${{ inputs.releasenotesmd-path }}
+      name: "${{ inputs.releasenotesmd-artifact-name }}"
+      path: "${{ inputs.releasenotesmd-path }}"
   - name: "Populate releasenotes variable"
     id: releasenotes_var
     shell: pwsh
     env:
-      filePath: ${{ steps.calculate_releasenotesmd_filepath.outputs.filepath }}
+      filePath: "${{ steps.calculate_releasenotesmd_filepath.outputs.filepath }}"
     run: |
       [string] $releaseNotesContent = Get-Content -Raw $Env:filePath -Encoding UTF8
       echo "content<<EOF`n${releaseNotesContent}`nEOF" | Out-File -Path $Env:GITHUB_OUTPUT -Encoding UTF8
