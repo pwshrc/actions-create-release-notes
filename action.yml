@@ -15,7 +15,7 @@ inputs:
   releasenotesmd-artifact-name:
     description: "The name of the artifact which will contain the release notes."
     required: true
-    default: 'releasenotes-md'
+    default: 'release-notes'
   releasenotesmd-path:
     description: "The path of the directory containing the release notes file."
     required: true
