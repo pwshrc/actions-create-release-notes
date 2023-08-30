@@ -5,6 +5,9 @@ inputs:
   mode:
     description: "One of 'upload' or 'download'."
     required: true
+  github_token:
+    description: "The token used to communicate with GitHub. "
+    required: true
   releasenotesmd-name:
     description: "The name of the file which will contain the release notes."
     required: true
@@ -85,7 +88,7 @@ runs:
     id: create_release_notes
     uses: mikepenz/release-changelog-builder-action@v4
     env:
-      GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      GITHUB_TOKEN: "${{ inputs.github_token }}"
     with:
       fromTag: "${{ steps.gitversion_vars.outputs.VersionSourceSha }}"
       toTag: "${{ steps.gitversion_vars.outputs.Sha }}"
