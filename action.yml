@@ -62,7 +62,7 @@ runs:
   steps:
   - name: Check out repository full history
     if: inputs.mode == 'upload'
-    uses: actions/checkout@v3
+    uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4
     with:
       fetch-depth: 0  # create-release-notes requires the full history to create the release notes.
   - name: Populate GitVersion variables
