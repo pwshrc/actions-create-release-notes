@@ -96,7 +96,7 @@ runs:
       outputFile: "${{ steps.calculate_releasenotesmd_filepath.outputs.filepath }}"
   - name: "Create artifact: ${{ inputs.releasenotesmd-artifact-name }}"
     if: inputs.mode == 'upload'
-    uses: actions/upload-artifact@v3
+    uses: actions/upload-artifact@v4
     with:
       name: "${{ inputs.releasenotesmd-artifact-name }}"
       path: "${{ steps.calculate_releasenotesmd_filepath.outputs.filepath }}"
