@@ -22,7 +22,7 @@ jobs:
     - name: dotnet tool install -g GitVersion.Tool
       if: steps.cacher.outputs.cache-hit != 'true'
       shell: pwsh
-      run: dotnet tool install --global GitVersion.Tool --version 5.12
+      run: dotnet tool install --global GitVersion.Tool --version 6.1
     - name: Check out repository full history
       uses: actions/checkout@v4
       with:
@@ -30,15 +30,18 @@ jobs:
     - name: Show GitVersion configuration
       shell: pwsh
       run: dotnet-gitversion /showconfig
-    - name: Capture GitVersion configuration
+    - name: Show GitVersion configuration
       shell: pwsh
       run: |
-        New-Item -Path ./out -Type Directory -Force | Out-Null
-        dotnet-gitversion /showconfig | Out-File -Path ./out/GitVersion.effective.yml -Encoding UTF8
+        dotnet-gitversion /showconfig
     - name: Determine version
+      id: generate_version_file
       shell: pwsh
+      env:
+        filePath: "./out/version.json"
       run: |
-        dotnet-gitversion /output json | Out-File -Path ./out/version.json -Encoding UTF8
+        New-Item (Split-Path $Env:filePath -Parent) -ItemType Directory -Force -ErrorAction SilentlyContinue | Out-Null
+        dotnet-gitversion /output json | Out-File -FilePath $Env:filePath -Encoding UTF8
         [int] $gitversionExitCode = $LASTEXITCODE
         if ($gitversionExitCode -ne 0) {
           Write-Host "GitVersion failed. Re-running with diagnostic verbosity."
