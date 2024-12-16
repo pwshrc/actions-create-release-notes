@@ -62,13 +62,13 @@ runs:
   steps:
   - name: Check out repository full history
     if: inputs.mode == 'upload'
-    uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+    uses: actions/checkout@v4
     with:
       fetch-depth: 0  # create-release-notes requires the full history to create the release notes.
   - name: Populate GitVersion variables
     if: inputs.mode == 'upload'
     id: gitversion_vars
-    uses: pwshrc/actions-determine-version@v0.8.7
+    uses: pwshrc/actions-determine-version@v0.9.0
     with:
       mode: 'download'
       versionjson-name: "${{ inputs.versionjson-name }}"
@@ -86,7 +86,7 @@ runs:
   - name: Create release notes
     if: inputs.mode == 'upload'
     id: create_release_notes
-    uses: mikepenz/release-changelog-builder-action@v4
+    uses: mikepenz/release-changelog-builder-action@v5
     env:
       GITHUB_TOKEN: "${{ inputs.github_token }}"
     with:
@@ -96,14 +96,14 @@ runs:
       outputFile: "${{ steps.calculate_releasenotesmd_filepath.outputs.filepath }}"
   - name: "Create artifact: ${{ inputs.releasenotesmd-artifact-name }}"
     if: inputs.mode == 'upload'
-    uses: actions/upload-artifact@v3
+    uses: actions/upload-artifact@v4
     with:
       name: "${{ inputs.releasenotesmd-artifact-name }}"
       path: "${{ steps.calculate_releasenotesmd_filepath.outputs.filepath }}"
       if-no-files-found: error
   - name: "Get artifact: ${{ inputs.releasenotesmd-artifact-name }}"
     if: inputs.mode == 'download'
-    uses: actions/download-artifact@v3
+    uses: actions/download-artifact@v4
     with:
       name: "${{ inputs.releasenotesmd-artifact-name }}"
       path: "${{ inputs.releasenotesmd-path }}"
