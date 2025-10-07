@@ -103,7 +103,7 @@ runs:
       if-no-files-found: error
   - name: "Get artifact: ${{ inputs.releasenotesmd-artifact-name }}"
     if: inputs.mode == 'download'
-    uses: actions/download-artifact@v4
+    uses: actions/download-artifact@v5
     with:
       name: "${{ inputs.releasenotesmd-artifact-name }}"
       path: "${{ inputs.releasenotesmd-path }}"
