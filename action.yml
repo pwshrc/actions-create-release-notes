@@ -86,7 +86,7 @@ runs:
   - name: Create release notes
     if: inputs.mode == 'upload'
     id: create_release_notes
-    uses: mikepenz/release-changelog-builder-action@v5
+    uses: mikepenz/release-changelog-builder-action@v6
     env:
       GITHUB_TOKEN: "${{ inputs.github_token }}"
     with:
